@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useMarketplace } from '../context/MarketplaceContext';
-import ModelViewer3D from '../components/ModelViewer3D';
 import Toast from '../components/Toast';
 import './Student.css';
 
@@ -16,10 +16,10 @@ const THUMB_GRADIENTS = [
 export default function Student() {
   const { classrooms, getClassroomByCode, getClassroomModels } = useMarketplace();
 
+  const navigate = useNavigate();
   const defaultCode = classrooms[0]?.code || '';
   const [codeInput, setCodeInput] = useState(defaultCode);
   const [joinedClassroom, setJoinedClassroom] = useState(null);
-  const [activeViewer, setActiveViewer] = useState(null);
   const [understoodIds, setUnderstoodIds] = useState([]);
   const [toast, setToast] = useState(null);
 
@@ -43,27 +43,6 @@ export default function Student() {
   return (
     <div className="student-page">
       {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
-
-      {activeViewer && (
-        <div className="modal-overlay" onClick={() => setActiveViewer(null)}>
-          <div className="modal-content viewer-modal" onClick={e => e.stopPropagation()}>
-            <div className="modal-header">
-              <div>
-                <h3>{activeViewer.name}</h3>
-                <p className="modal-subtitle">{activeViewer.subject} › {activeViewer.chapter}</p>
-              </div>
-              <button className="modal-close" onClick={() => setActiveViewer(null)}>✕</button>
-            </div>
-            <div className="modal-body">
-              <ModelViewer3D
-                model={activeViewer}
-                showAIBanner
-                onMarkUnderstood={handleMarkUnderstood}
-              />
-            </div>
-          </div>
-        </div>
-      )}
 
       <div className="container">
         {/* North Star badge */}
@@ -140,7 +119,7 @@ export default function Student() {
                       <div
                         key={model.id}
                         className={`student-model-card ${isUnderstood ? 'understood' : ''}`}
-                        onClick={() => setActiveViewer(model)}
+                        onClick={() => navigate(`/model/${model.id}`)}
                       >
                         <div
                           className="model-thumb"

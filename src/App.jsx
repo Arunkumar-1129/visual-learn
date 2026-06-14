@@ -7,6 +7,7 @@ import Creator from './pages/Creator';
 import LearnerHub from './pages/LearnerHub';
 import Teacher from './pages/Teacher';
 import Student from './pages/Student';
+import ModelPage from './pages/ModelPage';
 
 export default function App() {
   return (
@@ -19,6 +20,8 @@ export default function App() {
           <Route path="/learner" element={<LearnerHub />} />
           <Route path="/learner/teacher" element={<Teacher />} />
           <Route path="/learner/student" element={<Student />} />
+          <Route path="/model/:id" element={<ModelPage />} />
+          <Route path="/heart" element={<ModelPage />} />
         </Routes>
       </MarketplaceProvider>
     </BrowserRouter>

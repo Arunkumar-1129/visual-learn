@@ -131,3 +131,81 @@ export async function explainWithGemini(model, focusedPart = null, onChunk, onDo
 export function isGeminiConfigured() {
   return API_KEY && API_KEY !== 'your_gemini_api_key_here';
 }
+
+/**
+ * Multi-turn AI chat about a 3D model.
+ * messages = [{ role: 'user'|'assistant', content: string }]
+ */
+export async function chatWithGemini(model, messages, onChunk, onDone, onError) {
+  try {
+    const systemContext = `You are an expert STEM educator helping a student learn about a 3D interactive model in an app.
+
+Model: "${model.name}"
+Subject: ${model.subject}
+Chapter/Topic: ${model.chapter}
+${model.description ? `Description: ${model.description}` : ''}
+${model.parts && model.parts.length > 0 ? `Parts: ${model.parts.map(p => p.name).join(', ')}` : ''}
+
+Answer the student's questions about this model in a helpful, engaging, and clear manner. Keep responses concise and suitable for Class 11-12 students. Use **bold** for key terms, numbered lists for steps, and real-world analogies.`;
+
+    const apiMessages = [
+      { role: 'user', content: systemContext },
+      { role: 'assistant', content: `Great! I'm ready to help you learn about the ${model.name}. Ask me anything!` },
+      ...messages
+    ];
+
+    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${API_KEY}`,
+        "Content-Type": "application/json",
+        "HTTP-Referer": window.location?.href || "http://localhost:5173",
+        "X-Title": "VisualLearn"
+      },
+      body: JSON.stringify({
+        "model": "google/gemma-4-31b-it:free",
+        "messages": apiMessages,
+        "max_tokens": 1024,
+        "stream": true
+      })
+    });
+
+    if (!response.ok) {
+      const errText = await response.text();
+      throw new Error(`OpenRouter API error: ${response.status} ${errText}`);
+    }
+
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    let done = false;
+    let buffer = '';
+
+    while (!done) {
+      const { value, done: readerDone } = await reader.read();
+      done = readerDone;
+      if (value) {
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop();
+
+        for (const line of lines) {
+          const trimmed = line.trim();
+          if (!trimmed) continue;
+          if (trimmed === 'data: [DONE]') { onDone(); return; }
+          if (trimmed.startsWith('data: ')) {
+            try {
+              const data = JSON.parse(trimmed.slice(6));
+              if (data.choices?.[0]?.delta?.content) {
+                onChunk(data.choices[0].delta.content);
+              }
+            } catch (e) { /* ignore parse errors */ }
+          }
+        }
+      }
+    }
+    onDone();
+  } catch (err) {
+    console.error('Chat error:', err);
+    onError(err.message || 'Failed to get AI response.');
+  }
+}
