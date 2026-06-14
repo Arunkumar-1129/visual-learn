@@ -1,0 +1,390 @@
+.landing {
+  min-height: 100vh;
+}
+
+/* Hero */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 40px;
+  padding: 80px 80px 60px;
+  overflow: hidden;
+}
+
+.hero-glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  pointer-events: none;
+}
+
+.hero-glow-cyan {
+  width: 500px;
+  height: 500px;
+  background: rgba(94, 234, 212, 0.12);
+  top: -100px;
+  left: -100px;
+}
+
+.hero-glow-amber {
+  width: 400px;
+  height: 400px;
+  background: rgba(251, 191, 36, 0.1);
+  bottom: 0;
+  right: -50px;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: rgba(94, 234, 212, 0.1);
+  border: 1px solid rgba(94, 234, 212, 0.2);
+  border-radius: 20px;
+  font-size: 13px;
+  color: var(--accent-cyan);
+  font-family: var(--font-display);
+  font-weight: 500;
+  margin-bottom: 24px;
+}
+
+.hero-headline {
+  font-size: 56px;
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 20px;
+  color: var(--text-primary);
+}
+
+.hero-subheadline {
+  font-size: 18px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 36px;
+  max-width: 460px;
+}
+
+.hero-ctas {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.hero-btn-learner {
+  padding: 14px 28px;
+  background: var(--accent-cyan);
+  color: var(--bg-primary);
+  border-radius: 10px;
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hero-btn-learner:hover {
+  background: #7AF3E0;
+  box-shadow: 0 0 30px rgba(94, 234, 212, 0.3);
+  transform: translateY(-2px);
+}
+
+.hero-btn-creator {
+  padding: 14px 28px;
+  background: transparent;
+  border: 1.5px solid var(--accent-amber);
+  color: var(--accent-amber);
+  border-radius: 10px;
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hero-btn-creator:hover {
+  background: rgba(251, 191, 36, 0.1);
+  box-shadow: 0 0 30px rgba(251, 191, 36, 0.2);
+  transform: translateY(-2px);
+}
+
+.hero-3d {
+  position: relative;
+  height: 520px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: radial-gradient(ellipse at center, #1e204a 0%, #0f1028 100%);
+  border: 1px solid var(--border-subtle);
+  box-shadow: 0 0 60px rgba(94, 234, 212, 0.08), 0 0 120px rgba(94, 234, 212, 0.04);
+}
+
+.hero-3d canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.hero-3d-label {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  font-size: 11px;
+  color: rgba(148, 163, 184, 0.6);
+  font-family: var(--font-body);
+  letter-spacing: 0.06em;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+/* Onboarding section */
+.onboarding-section {
+  padding: 80px 24px;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.step-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 32px 28px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.25s ease;
+}
+
+.step-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: var(--shadow-surface);
+}
+
+.step-number {
+  font-size: 48px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  opacity: 0.25;
+  line-height: 1;
+  margin-bottom: 16px;
+}
+
+.step-icon {
+  font-size: 36px;
+  margin-bottom: 16px;
+}
+
+.step-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--text-primary);
+}
+
+.step-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.step-line {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  opacity: 0.6;
+}
+
+/* Role CTA section */
+.role-cta-section {
+  padding: 0 24px 80px;
+}
+
+.role-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.role-card {
+  position: relative;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 48px 40px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  display: block;
+}
+
+.role-card:hover {
+  transform: translateY(-4px);
+}
+
+.role-card-glow {
+  position: absolute;
+  top: -80px;
+  right: -80px;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(94, 234, 212, 0.15), transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.role-card-glow-amber {
+  background: radial-gradient(circle, rgba(251, 191, 36, 0.15), transparent 70%);
+}
+
+.role-card-learner {
+  border-color: rgba(94, 234, 212, 0.15);
+}
+
+.role-card-learner:hover {
+  border-color: rgba(94, 234, 212, 0.35);
+  box-shadow: 0 8px 40px rgba(94, 234, 212, 0.1);
+}
+
+.role-card-creator {
+  border-color: rgba(251, 191, 36, 0.15);
+}
+
+.role-card-creator:hover {
+  border-color: rgba(251, 191, 36, 0.35);
+  box-shadow: 0 8px 40px rgba(251, 191, 36, 0.1);
+}
+
+.role-emoji {
+  font-size: 48px;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.role-card h2 {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: var(--text-primary);
+}
+
+.role-card p {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.role-card-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 32px;
+}
+
+.role-card-tags span {
+  padding: 4px 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-subtle);
+  border-radius: 20px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-family: var(--font-display);
+}
+
+.role-card-cta {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--accent-cyan);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.role-card-cta-amber {
+  color: var(--accent-amber);
+}
+
+/* Footer */
+.landing-footer {
+  border-top: 1px solid var(--border-subtle);
+  padding: 40px 0;
+}
+
+.footer-inner {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.footer-logo {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--accent-cyan);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.footer-tagline {
+  font-size: 15px;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.footer-copy {
+  font-size: 12px;
+  color: rgba(148, 163, 184, 0.5);
+}
+
+@media (max-width: 1024px) {
+  .hero {
+    grid-template-columns: 1fr;
+    padding: 60px 24px;
+    min-height: auto;
+  }
+
+  .hero-3d {
+    height: 380px;
+  }
+
+  .hero-headline {
+    font-size: 40px;
+  }
+
+  .steps-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .role-cards {
+    grid-template-columns: 1fr;
+  }
+}

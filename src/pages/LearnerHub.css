@@ -1,0 +1,120 @@
+.learner-hub {
+  padding: 60px 0 80px;
+  min-height: calc(100vh - 64px);
+  display: flex;
+  align-items: center;
+}
+
+.hub-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.hub-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.hub-card {
+  position: relative;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 48px 40px;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.hub-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-surface);
+}
+
+.hub-card-glow {
+  position: absolute;
+  top: -60px;
+  left: -60px;
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle, rgba(94, 234, 212, 0.12), transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.hub-card-glow-student {
+  background: radial-gradient(circle, rgba(167, 139, 250, 0.12), transparent 70%);
+  left: auto;
+  right: -60px;
+}
+
+.hub-card-teacher {
+  border-color: rgba(94, 234, 212, 0.15);
+}
+
+.hub-card-teacher:hover {
+  border-color: rgba(94, 234, 212, 0.3);
+  box-shadow: 0 8px 40px rgba(94, 234, 212, 0.08);
+}
+
+.hub-card-student {
+  border-color: rgba(167, 139, 250, 0.15);
+}
+
+.hub-card-student:hover {
+  border-color: rgba(167, 139, 250, 0.3);
+  box-shadow: 0 8px 40px rgba(167, 139, 250, 0.08);
+}
+
+.hub-emoji {
+  font-size: 52px;
+}
+
+.hub-card h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.hub-card p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.hub-features {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.hub-features li {
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+}
+
+.hub-cta {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--accent-cyan);
+  margin-top: 8px;
+}
+
+.hub-cta-student {
+  color: #A78BFA;
+}
+
+@media (max-width: 768px) {
+  .hub-cards { grid-template-columns: 1fr; }
+  .learner-hub { align-items: flex-start; }
+}
