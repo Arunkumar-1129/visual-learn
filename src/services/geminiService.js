@@ -1,14 +1,16 @@
 // Removed GoogleGenerativeAI import
 const API_KEY = import.meta.env.VITE_OPENROUTER_API_KEY || '';
 
-// Free models in priority order — automatically falls back if one fails
+// Free models in priority order — spans multiple providers to avoid simultaneous rate limits
 const FREE_MODELS = [
-  'qwen/qwen3-8b:free',
-  'microsoft/phi-3-mini-128k-instruct:free',
-  'microsoft/phi-3-medium-128k-instruct:free',
-  'mistralai/mistral-7b-instruct:free',
-  'huggingfaceh4/zephyr-7b-beta:free',
-  'openchat/openchat-7b:free',
+  'meta-llama/llama-3.3-70b-instruct:free',       // Meta (most capable)
+  'meta-llama/llama-3.2-3b-instruct:free',         // Meta (fast fallback)
+  'nvidia/nemotron-3-super-120b-a12b:free',        // NVIDIA
+  'nvidia/nemotron-nano-9b-v2:free',               // NVIDIA (small, fast)
+  'openai/gpt-oss-20b:free',                       // OpenAI OSS
+  'qwen/qwen3-8b:free',                            // Qwen
+  'liquid/lfm-2.5-1.2b-instruct:free',            // Liquid (tiny, last resort)
+  'nousresearch/hermes-3-llama-3.1-405b:free',    // Nous Research
 ];
 
 /**
