@@ -1,12 +1,14 @@
 // Removed GoogleGenerativeAI import
 const API_KEY = import.meta.env.VITE_OPENROUTER_API_KEY || '';
 
-// Free models in priority order — automatically falls back if one is rate-limited
+// Free models in priority order — automatically falls back if one fails
 const FREE_MODELS = [
-  'meta-llama/llama-3.1-8b-instruct:free',
+  'qwen/qwen3-8b:free',
+  'microsoft/phi-3-mini-128k-instruct:free',
+  'microsoft/phi-3-medium-128k-instruct:free',
   'mistralai/mistral-7b-instruct:free',
-  'google/gemma-3-4b-it:free',
-  'google/gemma-4-26b-a4b-it:free',
+  'huggingfaceh4/zephyr-7b-beta:free',
+  'openchat/openchat-7b:free',
 ];
 
 /**
@@ -34,10 +36,12 @@ async function callOpenRouter(messages, onChunk, onDone, onError) {
 
       if (!response.ok) {
         const errText = await response.text();
-        // Rate limited — try next model
-        if (response.status === 429 || errText.includes('rate-limited') || errText.includes('rate_limit')) {
-          lastError = `${modelId} rate limited`;
-          console.warn(`Model ${modelId} rate-limited, trying next...`);
+        // Rate limited or unavailable — try next model
+        if (response.status === 429 || response.status === 404 ||
+            errText.includes('rate-limited') || errText.includes('rate_limit') ||
+            errText.includes('unavailable') || errText.includes('not available')) {
+          lastError = `${modelId}: ${response.status}`;
+          console.warn(`Model ${modelId} unavailable (${response.status}), trying next...`);
           continue;
         }
         throw new Error(`OpenRouter API error: ${response.status} ${errText}`);
