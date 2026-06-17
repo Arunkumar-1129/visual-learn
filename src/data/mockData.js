@@ -88,6 +88,7 @@ export const marketplaceModels = [
     price: 349,
     purchases: 15,
     views: 480,
+    fileUrl: "/models/plantcell/scene.gltf",
     parts: [
       { name: "Cell Wall", color: "#86EFAC", description: "Rigid outer layer providing structural support and protection to the plant cell." },
       { name: "Nucleus", color: "#C084FC", description: "Control center of the cell containing genetic material (DNA)." },

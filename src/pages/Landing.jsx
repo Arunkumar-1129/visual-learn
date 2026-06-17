@@ -1,78 +1,18 @@
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
+import { OrbitControls, useGLTF } from '@react-three/drei';
 import './Landing.css';
 
-function HeroGenerator() {
-  const rotorRef = useRef();
-
-  useFrame((state, delta) => {
-    if (rotorRef.current) {
-      rotorRef.current.rotation.y += delta * 1.8;
-    }
-  });
+function MarsRover() {
+  const { scene } = useGLTF('/models/perseverance.glb');
 
   return (
-    <group>
-      {/* Shaft */}
-      <mesh position={[0, 0, 0]}>
-        <cylinderGeometry args={[0.07, 0.07, 4, 16]} />
-        <meshStandardMaterial color="#F5F5F0" metalness={0.7} roughness={0.2} />
-      </mesh>
-
-      {/* Rotor */}
-      <group ref={rotorRef}>
-        <mesh>
-          <cylinderGeometry args={[0.65, 0.65, 1.8, 32]} />
-          <meshStandardMaterial
-            color="#5EEAD4"
-            emissive="#2DD4BF"
-            emissiveIntensity={0.3}
-            metalness={0.4}
-            roughness={0.4}
-          />
-        </mesh>
-      </group>
-
-      {/* Stator Coil 1 */}
-      <mesh rotation={[Math.PI / 2, 0, 0]}>
-        <torusGeometry args={[1.2, 0.22, 16, 60]} />
-        <meshStandardMaterial
-          color="#FBBF24"
-          emissive="#F59E0B"
-          emissiveIntensity={0.2}
-          metalness={0.3}
-          roughness={0.5}
-        />
-      </mesh>
-
-      {/* Stator Coil 2 */}
-      <mesh rotation={[0, Math.PI / 3, Math.PI / 2]}>
-        <torusGeometry args={[1.2, 0.13, 12, 60]} />
-        <meshStandardMaterial
-          color="#FBBF24"
-          emissive="#F59E0B"
-          emissiveIntensity={0.15}
-          metalness={0.3}
-          roughness={0.5}
-          transparent
-          opacity={0.7}
-        />
-      </mesh>
-
-      {/* Carbon Brush 1 */}
-      <mesh position={[0.8, -0.9, 0]}>
-        <boxGeometry args={[0.16, 0.38, 0.16]} />
-        <meshStandardMaterial color="#94A3B8" metalness={0.2} roughness={0.8} />
-      </mesh>
-
-      {/* Carbon Brush 2 */}
-      <mesh position={[-0.8, -0.9, 0]}>
-        <boxGeometry args={[0.16, 0.38, 0.16]} />
-        <meshStandardMaterial color="#94A3B8" metalness={0.2} roughness={0.8} />
-      </mesh>
-    </group>
+    <primitive 
+      object={scene} 
+      scale={1} 
+      position={[0, -1, 0]} 
+    />
   );
 }
 
@@ -130,13 +70,13 @@ export default function Landing() {
         </div>
 
         <div className="hero-3d">
-          <div className="hero-3d-label">Electric Generator · Drag to rotate</div>
+          <div className="hero-3d-label">Mars 2020 Rover · Drag to rotate</div>
           <Canvas camera={{ position: [0, 0, 5], fov: 50 }}>
             <ambientLight intensity={0.5} />
             <directionalLight position={[5, 5, 5]} intensity={1.2} />
             <directionalLight position={[-4, -2, -3]} intensity={0.4} color="#5EEAD4" />
             <pointLight position={[0, 3, 0]} intensity={0.5} color="#FBBF24" />
-            <HeroGenerator />
+            <MarsRover />
             <OrbitControls enableZoom enablePan autoRotate autoRotateSpeed={0.8} />
           </Canvas>
         </div>
