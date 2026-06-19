@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { explainWithGemini, isGeminiConfigured } from '../services/geminiService';
 import './AIExplanationPanel.css';
 
@@ -52,6 +52,15 @@ export default function AIExplanationPanel({ model, focusedPart }) {
       }
     );
   }, [model, focusedPart, configured]);
+
+  // Auto-trigger explanation when model changes (or on first mount)
+  useEffect(() => {
+    abortRef.current = true; // abort any previous in-flight request
+    runExplanation();
+    return () => {
+      abortRef.current = true; // abort on unmount
+    };
+  }, [model.id]); // re-run when switching to a different model
 
   const handleCopy = () => {
     navigator.clipboard.writeText(contentRef.current);
@@ -131,3 +140,4 @@ export default function AIExplanationPanel({ model, focusedPart }) {
     </div>
   );
 }
+

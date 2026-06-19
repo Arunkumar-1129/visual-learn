@@ -1,4 +1,4 @@
-import React, { useRef, useState, Suspense } from 'react';
+import React, { useRef, useState, Suspense, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { OrbitControls, Html, useGLTF, Environment } from '@react-three/drei';
@@ -66,8 +66,9 @@ function HeartModel({ highlightedPart, onPartClick }) {
     { name: 'Left Ventricle', color: '#EF4444', emissive: '#DC2626', pos: [-0.55, -0.5, 0], scale: [0.7, 0.75, 0.65], desc: 'Pumps oxygenated blood to the body via the aorta.' },
     { name: 'Right Ventricle', color: '#3B82F6', emissive: '#2563EB', pos: [0.55, -0.5, 0], scale: [0.65, 0.75, 0.65], desc: 'Pumps deoxygenated blood to the lungs.' },
   ];
+  // Shift the whole group down so the heart is visually centered at the origin
   return (
-    <group>
+    <group position={[0, -0.3, 0]}>
       {parts.map(p => (
         <mesh key={p.name} position={p.pos} scale={p.scale} onClick={() => onPartClick(p.name)}>
           <sphereGeometry args={[0.65, 24, 24]} />
@@ -148,9 +149,23 @@ function GenericProceduralModel({ model, highlightedPart, onPartClick }) {
 
 function GLBModel({ fileUrl, model, highlightedPart }) {
   const { scene } = useGLTF(fileUrl);
+  const innerRef = useRef();
+
+  // Auto-center the GLB by computing its bounding box and offsetting
+  // so the model's visual center sits exactly at the world origin [0,0,0]
+  useEffect(() => {
+    if (innerRef.current) {
+      const box = new THREE.Box3().setFromObject(innerRef.current);
+      const center = box.getCenter(new THREE.Vector3());
+      innerRef.current.position.set(-center.x, -center.y, -center.z);
+    }
+  }, [scene]);
+
   return (
     <group>
-      <primitive object={scene} />
+      <group ref={innerRef}>
+        <primitive object={scene} />
+      </group>
       {model && model.parts && model.parts.map((part, i) => {
         // Fallback positions if part doesn't have pos
         const defaultPos = [[-0.8, 0.6, 0], [0.8, 0.6, 0], [-0.8, -0.5, 0], [0.8, -0.5, 0]];
@@ -244,7 +259,14 @@ export default function ModelViewer3D({ model, showAIBanner = false, onMarkUnder
             <directionalLight position={[5, 5, 5]} intensity={1} castShadow />
             <directionalLight position={[-3, -2, -3]} intensity={0.3} color="#5EEAD4" />
             <SceneModel model={model} highlightedPart={highlightedPart} onPartClick={setHighlightedPart} />
-            <OrbitControls enableZoom enablePan autoRotate autoRotateSpeed={0.5} makeDefault />
+            <OrbitControls
+              enableZoom
+              enablePan
+              autoRotate
+              autoRotateSpeed={0.5}
+              makeDefault
+              target={[0, 0, 0]}
+            />
           </Canvas>
           <div className="canvas-hint">Drag to rotate · Scroll to zoom</div>
         </div>
